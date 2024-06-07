@@ -1,0 +1,25 @@
+@font-face {
+    font-family: "TT Squares";
+    src: url("fonts/TTSquares.ttf");
+}
+
+@font-face {
+    font-family: "Dela Gothic One";
+    src: url("fonts/DelaGothicOne.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+p, a, label, input, textarea, button, h1, h2, h3 {
+    font-size: 20px;
+    font-family: "TT Squares";
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
