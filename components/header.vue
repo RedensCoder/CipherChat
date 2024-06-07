@@ -2,9 +2,8 @@
 import {useAPIStore} from "~/store/APIStore.js";
 import { io } from 'socket.io-client';
 
-const socket = io('https://redenscoder-cipherchat-ab86.twc1.net');
-
 const API = useAPIStore();
+const socket = io(API.URL);
 
 onMounted(async () => {
   if (API.username === "" && localStorage.getItem("token") !== null) {

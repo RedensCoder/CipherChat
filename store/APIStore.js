@@ -2,10 +2,12 @@ import {defineStore} from "pinia";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 
-const URL = "https://redenscoder-cipherchat-ab86.twc1.net";
+// const URL = "https://redenscoder-cipherchat-ab86.twc1.net";
+const URL = "http://localhost:8080";
 
 export const useAPIStore = defineStore("API", {
     state: () => { return {
+        URL: URL,
         id: 0,
         username: "",
         avatar: "",

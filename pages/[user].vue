@@ -6,9 +6,8 @@ import {jwtDecode} from "jwt-decode";
 import {useAsyncData} from "#app";
 import {computed, ref} from "vue";
 
-const socket = io('https://redenscoder-cipherchat-ab86.twc1.net');
-
 const API = useAPIStore();
+const socket = io(API.URL);
 
 const user = reactive({ value: {} });
 

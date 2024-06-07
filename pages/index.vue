@@ -17,7 +17,7 @@ const API = useAPIStore();
 
 const router = useRouter();
 
-const socket = io('https://redenscoder-cipherchat-ab86.twc1.net');
+const socket = io(API.URL);
 
 const chatId = ref(null);
 const chats = reactive([]);
@@ -43,12 +43,12 @@ watch(search, async () => {
           let added = false;
           for (let el2 of chatReq) {
             if (Number(el.reciever) === Number(el2.reciever)) {
-              chats.push(Object.assign(el, {notif: false, chatId: el2.chatId, notification: el2.notification}));
+              chats.push(Object.assign(el, {chatId: el2.chatId, notification: el2.notification}));
               added = true;
             }
           }
           if (!added) {
-            chats.push(Object.assign(el, {notif: false}));
+            chats.push(el);
           }
         }
       }
@@ -57,11 +57,7 @@ watch(search, async () => {
     chats.splice(0, chats.length);
     const chatReq2 = await API.GetUserChats();
     if (chatReq2.length > 0) {
-      for (let el of chatReq2) {
-        if (el.id !== API.id) {
-          chats.push(Object.assign(el, {notif: false}));
-        }
-      }
+        chats.push(...chatReq2);
     }
   }
 });
@@ -71,13 +67,13 @@ onMounted(async () => {
     await router.push("/signin");
   }
 
+  const notificationSound = new Audio('notification.ogg');
+
   width.value = window.innerWidth;
 
   const req = await API.GetUserChats();
 
-  for (let el of req) {
-    chats.push(Object.assign(el, { notif: false }));
-  }
+  chats.push(...req);
 
   socket.emit('userOnline', JSON.parse(jwtDecode(localStorage.getItem("token")).data.id));
 
@@ -89,13 +85,11 @@ onMounted(async () => {
     }
   });
 
-  const notificationSound = new Audio('notification.ogg');
-
   socket.on('newMessage', async (message) => {
     for (let el of chats) {
       if (Number(el.reciever) === Number(message.senderId)) {
         if (chatId.value === null) {
-          el.notif = true;
+          el.unreadMessagesCount += 1;
           await notificationSound.play();
         }
 
@@ -103,9 +97,18 @@ onMounted(async () => {
           if (el.id === message.chatId) {
             const req = await API.GetUserChats();
             chats.splice(0, chats.length);
-            chats.push(Object.assign(req[i], {notif: false}));
+            chats.push(req[chats.indexOf(el)]);
           }
         }
+      }
+    }
+  });
+
+  socket.on("seen", async (message) => {
+    for (let el of chats) {
+      if (el.reciever === message.senderId) {
+        const req = await API.GetAllMessages(el.chatId, 0, el.unreadMessagesCount);
+        el.unreadMessagesCount -= req.length;
       }
     }
   });
@@ -135,7 +138,9 @@ useHead({
             <img :src="c.avatar" alt="avatar">
             <div :class="c.online ? 'online' : 'offline'"></div>
             <p>{{ c.name }}</p>
-            <svg v-if="c.notif && c.notification" class="notification" xmlns="http://www.w3.org/2000/svg" width="25" viewBox="0 0 512 512"><path fill="#17E351" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>
+            <div v-if="c.notification && c.unreadMessagesCount > 0" class="notification">
+              <p>{{ c.unreadMessagesCount }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -164,10 +169,7 @@ useHead({
   align-items: center;
   cursor: pointer;
   margin-top: 20px;
-}
-
-.chats__chat p {
-  margin-left: 10px;
+  text-align: center;
 }
 
 .chats__chat img {
@@ -192,6 +194,17 @@ useHead({
 
 .notification {
   margin-left: 10px;
+  background: #11b741;
+  width: 25px;
+  height: 25px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification p {
+  font-size: 18px;
 }
 
 .search {
@@ -238,8 +251,6 @@ useHead({
 
 @media(max-width: 1024px) {
   .chats {
-    //display: flex;
-    //flex-direction: column;
     width: 100%;
     margin: 20px 0 0 0;
   }

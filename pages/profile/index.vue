@@ -4,9 +4,8 @@ import {useAPIStore} from "~/store/APIStore.js";
 import {io} from "socket.io-client";
 import {jwtDecode} from "jwt-decode";
 
-const socket = io('https://redenscoder-cipherchat-ab86.twc1.net');
-
 const API = useAPIStore();
+const socket = io(API.URL);
 
 const router = useRouter();
 
