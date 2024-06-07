@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       BigInt @id @default(autoincrement())
+  login    String @unique
+  password String
+  pKey     String
+
+  User_Infos User_infos?    @relation("infos")
+  Chat_Users Chat_users[]   @relation("chatUsers")
+  Reciever   Messages[]     @relation("reciever")
+  Sender     Messages[]     @relation("sender")
+  Rating     User_ratings[] @relation("rating")
+  Profile    User_ratings[] @relation("profile")
+}
+
+model User_infos {
+  id         BigInt   @id @default(autoincrement())
+  userId     BigInt   @unique
+  user       Users    @relation(name: "infos", fields: [userId], references: [id])
+  online     Boolean  @default(false)
+  about      String?
+  rating     Float    @default(0.0)
+  avatar     String
+  lastOnline DateTime @default(now())
+}
+
+model User_ratings {
+  id        BigInt @id @default(autoincrement())
+  userId    BigInt
+  profileId BigInt
+  user      Users  @relation(name: "rating", fields: [userId], references: [id])
+  profile   Users  @relation(name: "profile", fields: [profileId], references: [id])
+  rating    Float
+}
+
+model Chats {
+  id BigInt @id @default(autoincrement())
+
+  Messages   Messages[]
+  Chat_Users Chat_users[]
+}
+
+model Chat_users {
+  id           BigInt  @id @default(autoincrement())
+  chatId       BigInt
+  chat         Chats   @relation(fields: [chatId], references: [id])
+  userId       BigInt
+  user         Users   @relation(name: "chatUsers", fields: [userId], references: [id])
+  notification Boolean @default(true)
+}
+
+model Messages {
+  id            BigInt   @id @default(autoincrement())
+  chatId        BigInt
+  chat          Chats    @relation(fields: [chatId], references: [id])
+  content       String
+  doubleContent String
+  recieverId    BigInt
+  senderId      BigInt
+  reciever      Users    @relation("reciever", fields: [recieverId], references: [id])
+  sender        Users    @relation("sender", fields: [senderId], references: [id])
+  date          DateTime @default(now())
+  seen          Boolean  @default(false)
+}
