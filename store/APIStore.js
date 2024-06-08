@@ -2,8 +2,8 @@ import {defineStore} from "pinia";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 
-// const URL = "https://redenscoder-cipherchat-ab86.twc1.net";
-const URL = "http://localhost:8080";
+const URL = "https://redenscoder-cipherchat-ab86.twc1.net";
+// const URL = "http://localhost:8080";
 
 export const useAPIStore = defineStore("API", {
     state: () => { return {
@@ -18,15 +18,19 @@ export const useAPIStore = defineStore("API", {
     }},
     actions: {
         async Init() {
-            const user = await this.GetUser(jwtDecode(localStorage.getItem("token")).data.login);
+            try {
+                const user = await this.GetUser(jwtDecode(localStorage.getItem("token")).data.login);
 
-            this.id = jwtDecode(localStorage.getItem("token")).data.id;
-            this.username = jwtDecode(localStorage.getItem("token")).data.login;
-            this.avatar = user.avatar;
-            this.about = user.about;
-            this.rating = user.rating;
-            this.token = localStorage.getItem("token");
-            this.privateKey = localStorage.getItem("privateKey");
+                this.id = jwtDecode(localStorage.getItem("token")).data.id;
+                this.username = jwtDecode(localStorage.getItem("token")).data.login;
+                this.avatar = user.avatar;
+                this.about = user.about;
+                this.rating = user.rating;
+                this.token = localStorage.getItem("token");
+                this.privateKey = localStorage.getItem("privateKey");
+            } catch(e) {
+                return 0;
+            }
         },
         async Register(login, password) {
             try {

@@ -51,7 +51,7 @@ useHead({
 <style scoped>
   .main {
     height: 100vh;
-    background: url("https://i.pinimg.com/originals/e1/69/9c/e1699c982396398139e4fc8c010c90f8.jpg");
+    background: #2F2B42;
     color: white;
     display: flex;
     justify-content: center;
@@ -84,22 +84,14 @@ useHead({
   }
 
   .form a {
-    color: #17E351;
+    color: #4D7CFE;
   }
 
   .form button {
-    background: #17E351;
+    background: #4D7CFE;
     border-radius: 10px;
     padding: 5px 35px;
     cursor: pointer;
-  }
-
-  .form button:hover {
-    background: #13ab3f;
-  }
-
-  .form button:active {
-    background: #d2d2d2;
   }
 
   /* ======= ADAPTIVE ====== */

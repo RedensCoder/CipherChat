@@ -38,8 +38,8 @@ useHead({
 
 <template>
   <div class="main">
-    <Header />
     <div class="profile">
+      <button @click="router.push('/profile')" class="back">Назад</button>
       <div class="profile__profile">
         <h3>Настройки Профиля</h3>
         <div class="form">
@@ -55,18 +55,17 @@ useHead({
 <style scoped>
   .main {
     height: 100vh;
-    background: url("https://i.pinimg.com/originals/e1/69/9c/e1699c982396398139e4fc8c010c90f8.jpg");
+    background: #2F2B42;
   }
 
   .profile {
     width: 40%;
-    margin: 40px auto;
+    margin: 0 auto;
+    height: 100vh;
+    background: #393251;
   }
 
   .profile__profile {
-    background: rgba(20, 20, 20, 0.6);
-    backdrop-filter: saturate(120%) blur(10px);
-    border-radius: 15px;
     padding: 30px;
     color: white;
     text-align: center;
@@ -89,21 +88,24 @@ useHead({
     outline: none;
     background: none;
     color: white;
+    background: #574E7C;
   }
 
   .form button {
-    background: #17E351;
+    background: #4D7CFE;
     border-radius: 10px;
     padding: 5px 35px;
     cursor: pointer;
+    color: white;
   }
 
-  .form button:hover {
-    background: #13ab3f;
-  }
-
-  .form button:active {
-    background: #9d9d9d;
+  .back {
+    background: none;
+    color: white;
+    cursor: pointer;
+    font-size: 25px;
+    text-align: center;
+    margin: 10px;
   }
 
   /* ===== ADAPTIVE ===== */

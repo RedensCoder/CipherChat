@@ -1,9 +1,10 @@
 <script setup>
-import Header from "~/components/header.vue";
 import {useRouter} from "vue-router";
 import {useAPIStore} from "~/store/APIStore.js";
 import {io} from "socket.io-client";
 import {jwtDecode} from "jwt-decode";
+
+import Profile from "~/components/profile.vue";
 
 const INACTIVITY_TIME = 5 * 60 * 1000;
 let inactivityTimeout = ref(null);
@@ -67,6 +68,13 @@ onMounted(async () => {
     await router.push("/signin");
   }
 
+  const init = await API.Init();
+  if (init === 0) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("privateKey")
+    await router.push("/signin");
+  }
+
   const notificationSound = new Audio('notification.ogg');
 
   width.value = window.innerWidth;
@@ -126,15 +134,11 @@ useHead({
 
 <template>
   <div @mousemove="setActive" @keypress="setActive" @click="setActive" class="main">
-    <Header />
     <div class="chats">
       <div class="chats__chats">
         <p class="label">Чаты</p>
-        <div class="search">
-          <input v-model="search" type="text" placeholder="Введите имя пользователя">
-        </div>
         <div class="chats__scroll">
-          <div @click="() => { setChat(c); c.notif = false;}" v-for="c in chats" class="chats__chat">
+          <div @click="() => { setChat(c); c.notif = false;}" v-for="c in chats" :class="chatId !== null && chatId.chatId === c.chatId ? 'chats__chat active' : 'chats__chat'">
             <img :src="c.avatar" alt="avatar">
             <div :class="c.online ? 'online' : 'offline'"></div>
             <p>{{ c.name }}</p>
@@ -144,7 +148,17 @@ useHead({
           </div>
         </div>
       </div>
-      <Messages v-if="chatId !== null" :chat="chatId" />
+      <div class="chat__messages">
+        <div class="search">
+          <input v-model="search" type="text" placeholder="Введите никнейм пользователя, которого хотите найти">
+          <NuxtLink to="/profile"><div class="search__profile">
+            <img :src="API.avatar" alt="avatar">
+            <p>{{ API.username }}</p>
+          </div></NuxtLink>
+        </div>
+        <Messages v-if="chatId !== null" :chat="chatId" />
+      </div>
+      <Profile v-if="chatId !== null" :chat="chatId" />
     </div>
   </div>
 </template>
@@ -152,16 +166,19 @@ useHead({
 <style scoped>
 .main {
   height: 100vh;
-  background: url("https://i.pinimg.com/originals/e1/69/9c/e1699c982396398139e4fc8c010c90f8.jpg");
+  background: #2F2B42;
 }
 
 .chats__chats {
-  background: rgba(20, 20, 20, 0.6);
-  backdrop-filter: saturate(120%) blur(10px);
-  border-radius: 15px;
+  background: #393251;
   text-align: center;
-  padding: 20px;
-  width: 15%;
+  padding: 0 20px;
+  width: 20%;
+  height: 100vh;
+}
+
+.label {
+  margin-top: 20px;
 }
 
 .chats__chat {
@@ -184,8 +201,7 @@ useHead({
   display: flex;
   color: white;
   height: 85vh;
-  width: 90%;
-  margin: 40px auto;
+  margin: 0 auto;
 }
 
 .label {
@@ -194,7 +210,7 @@ useHead({
 
 .notification {
   margin-left: 10px;
-  background: #11b741;
+  background: #4D7CFE;
   width: 25px;
   height: 25px;
   border-radius: 100px;
@@ -215,8 +231,10 @@ useHead({
 }
 
 .search input {
+  background: #393251;
+  color: white;
   font-size: 18px;
-  padding: 5px 10px;
+  padding: 10px;
   border-radius: 10px;
   outline: none;
   width: 70%;
@@ -229,8 +247,13 @@ useHead({
   scrollbar-width: none;
 }
 
+.active {
+  background: #574E7A;
+  border-radius: 100px;
+}
+
 .online {
-  background: #17E351;
+  background: #4D7CFE;
   width: 10px;
   height: 10px;
   border: 1px black solid;
@@ -245,6 +268,23 @@ useHead({
   width: 10px;
   height: 10px;
 
+}
+
+.chat__messages {
+  width: 100%;
+}
+
+.search__profile {
+  display: flex;
+  align-items: center;
+}
+
+.search__profile p {
+  margin-left: 10px;
+}
+
+.search__profile img {
+  width: 50px;
 }
 
 /* ======= ADAPTIVE ======== */
