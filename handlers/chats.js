@@ -63,13 +63,23 @@ router.get("/getChatUsersByUserId/:id", authenticateToken, async (req, res) => {
 
     const users = [];
 
-    chatUsers.forEach(chatUser => {
+    for (let chatUser of chatUsers) {
         const chat = chatUser.chat;
-        chat.Chat_Users.forEach(cu => {
+        for (let cu of chat.Chat_Users) {
             if (Number(cu.userId) !== Number(userId)) {
                 const user = cu.user;
                 const userInfo = user.User_Infos;
                 const lastMessage = chat.Messages[0];
+
+                const unreadMessagesCount = await prisma.messages.count({
+                    where: {
+                        chatId: chat.id,
+                        seen: false,
+                        senderId: {
+                            not: userId
+                        }
+                    }
+                });
 
                 users.push({
                     name: user.login,
@@ -80,11 +90,12 @@ router.get("/getChatUsersByUserId/:id", authenticateToken, async (req, res) => {
                     lastOnline: formatLastSeen(userInfo.lastOnline),
                     notification: cu.notification,
                     count: chat.Messages.length,
-                    lastMTime: lastMessage ? lastMessage.date : null
+                    lastMTime: lastMessage ? lastMessage.date : null,
+                    unreadMessagesCount
                 });
             }
-        });
-    });
+        }
+    }
 
     users.sort((a, b) => {
         if (a.lastMTime && b.lastMTime) {
