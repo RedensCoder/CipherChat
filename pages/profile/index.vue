@@ -62,7 +62,7 @@ useHead({
           <img class="avatar" :src="API.avatar" alt="avatar">
           <div class="info__info">
             <p class="name">{{ API.username }}</p>
-            <p class="online">В ести</p>
+            <p class="online">В сети</p>
           </div>
           <div class="form">
             <input id="avaUpload" type="file" accept="image/png, image/jpg, image/jpeg" @change="avaChange" class="input_hidden">
@@ -126,10 +126,6 @@ useHead({
     align-items: center;
     justify-content: space-between;
     text-align: end;
-  }
-
-  .info__info {
-    margin-left: 20px;
   }
 
   .name {
@@ -239,10 +235,6 @@ useHead({
 
     .info__info {
       margin: 10px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
 
     .settings {
