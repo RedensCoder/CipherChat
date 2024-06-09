@@ -152,7 +152,7 @@ useHead({
         <div class="search">
           <input v-model="search" type="text" placeholder="Введите никнейм пользователя, которого хотите найти">
           <NuxtLink to="/profile"><div class="search__profile">
-            <img :src="API.avatar" alt="avatar">
+            <img class="avatar" :src="API.avatar" alt="avatar">
             <p>{{ API.username }}</p>
           </div></NuxtLink>
         </div>
@@ -249,6 +249,14 @@ useHead({
 
 .active {
   background: #574E7A;
+  border-radius: 100px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  object-position: center center;
   border-radius: 100px;
 }
 

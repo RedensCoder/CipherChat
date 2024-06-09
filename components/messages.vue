@@ -138,17 +138,6 @@ onBeforeUnmount(() => {
       <svg v-else class="send_button" width="40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#eeab77" d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480V396.4c0-4 1.5-7.8 4.2-10.7L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
     </div>
   </div>
-<!--  <div class="user">-->
-<!--    <NuxtLink :to="props.chat.name"><div class="user__user">-->
-<!--      <img :src="props.chat.avatar" alt="avatar">-->
-<!--      <div class="user__info">-->
-<!--        <p class="label">{{ props.chat.name }}</p>-->
-<!--        <p class="online">{{ props.chat.online ? "В сети" : props.chat.lastOnline }}</p>-->
-<!--      </div>-->
-<!--    </div></NuxtLink>-->
-<!--    <svg @click="notification" v-if="props.chat.notification === true && props.chat.notification !== undefined" style="cursor:pointer;" width="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#FFFFFF" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>-->
-<!--    <svg @click="notification" v-else-if="props.chat.notification !== undefined" style="cursor:pointer;" width="40" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="#FFFFFF" d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-90.2-70.7c.2-.4 .4-.9 .6-1.3c5.2-11.5 3.1-25-5.3-34.4l-7.4-8.3C497.3 319.2 480 273.9 480 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V51.2c-42.6 8.6-79 34.2-102 69.3L38.8 5.1zM406.2 416L160 222.1v4.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S115.4 416 128 416H406.2zm-40.9 77.3c12-12 18.7-28.3 18.7-45.3H320 256c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>-->
-<!--  </div>-->
 </template>
 
 <style scoped>
