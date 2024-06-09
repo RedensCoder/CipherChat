@@ -52,7 +52,7 @@ onBeforeMount(async () => {
         <img class="avatar" :src="user.value.avatar" alt="avatar">
         <div class="info__info">
           <p class="name">{{ props.chat.name }}</p>
-          <p class="online">{{ user.value.online ? "В ести" : user.value.lastOnline }}</p>
+          <p class="online">{{ user.value.online ? "В сети" : user.value.lastOnline }}</p>
         </div>
       </div>
       <div class="profile__about">
