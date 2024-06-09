@@ -253,8 +253,8 @@ useHead({
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   object-position: center center;
   border-radius: 100px;
