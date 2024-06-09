@@ -100,6 +100,13 @@ useHead({
     background: #2F2B42;
   }
 
+  .info__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .profile {
     width: 40%;
     margin: 0 auto;
