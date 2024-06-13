@@ -3,6 +3,7 @@ import {useRouter} from "vue-router";
 import {useAPIStore} from "~/store/APIStore.js";
 import {io} from "socket.io-client";
 import {jwtDecode} from "jwt-decode";
+import {computed} from "vue";
 
 const API = useAPIStore();
 const socket = io(API.URL);
@@ -28,6 +29,21 @@ const logout = async () => {
 
   await router.push("/signin");
 }
+
+const stars = computed(() => {
+  const result = [];
+  for (let i = 1; i <= 5; i++) {
+    if (i <= API.rating) {
+      result.push(1);
+    } else if (i - 0.5 <= API.rating) {
+      result.push(0.5);
+    } else {
+      result.push(0);
+    }
+  }
+  return result;
+});
+
 
 onMounted(async () => {
   if (localStorage.getItem("token") === null) {
