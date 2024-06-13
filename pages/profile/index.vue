@@ -233,6 +233,10 @@ useHead({
     display: flex;
   }
 
+  .stars {
+    display: flex;
+  }
+
   .star {
     margin-right: 10px;
     width: 50px;
